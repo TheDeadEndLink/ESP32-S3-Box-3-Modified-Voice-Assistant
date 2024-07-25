@@ -2,8 +2,8 @@
 based on https://github.com/esphome/firmware/blob/main/wake-word-voice-assistant/esp32-s3-box-3.yaml
 
 ## Credits
-Copyright by the contributors of wake-word-voice-assistant
-Modified by TheDeadEnd
+- Copyright by the contributors of wake-word-voice-assistant
+- Modified by TheDeadEnd
 
 ## Modifications
 1) Response streaming to Speaker removed, allowing to individually configure a device or media player
