@@ -6,6 +6,10 @@ substitutions:
 packages:
   esphome.voice-assistant: github://TheDeadEndLink/ESP32-S3-Box-3-Modified-Voice-Assistant/esp32-s3-box-3-voice-assistant-modified.yaml@main
 
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
 api:
   encryption:
     key: ${key}
