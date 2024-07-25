@@ -693,16 +693,6 @@ text_sensor:
     platform: template
     on_value:
       lambda: |-
-        if(id(text_request).state.length()<1) {
-          id(voice_assistant_phase) = ${voice_assist_idle_phase_id};
-        }
-        if(id(text_request).state == "STOPP") {
-          id(voice_assistant_phase) = ${voice_assist_idle_phase_id};
-        }
-        if(id(text_request).state == "STOP") {
-          id(voice_assistant_phase) = ${voice_assist_idle_phase_id};
-        }
-
         if(id(text_request).state.length()>32) {
           std::string name = id(text_request).state.c_str();
           std::string truncated = esphome::str_truncate(name.c_str(),31);
