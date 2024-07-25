@@ -1,12 +1,19 @@
+# -----------------------------------------
+# Modification of the Home Assistant Voice Assistant for ESP32 S3 Box 3
 # based on https://github.com/esphome/firmware/blob/main/wake-word-voice-assistant/esp32-s3-box-3.yaml
-# GitHub Version Jul 17, 2024
+# GitHub Version 25.07.2024
+# -----------------------------------------
 # Modified by TheDeadEnd
 # Modified 25.07.2024
+# -----------------------------------------
 # Modifications:
-# 1) Speaker-Output removed
-# 2) Display turns off in idle mode
-# --> see example for your local yaml file
+# - Response streaming to Speaker removed, allowing to individually configure a device or media player
+# - In Idle mode, the display is switched off
+# - Most of the images replaced
+# -----------------------------------------
+# Usage example for your local yaml file:
 # https://github.com/TheDeadEndLink/ESP32-S3-Box-3-Modified-Voice-Assistant/raw/main/Local_ESPHome_Example.yaml
+# -----------------------------------------
 
 substitutions:
   name: esp32-s3-box-3
@@ -43,7 +50,7 @@ substitutions:
 esphome:
   name: ${name}
   friendly_name: ${friendly_name}
-  min_version: 2024.6.0
+  min_version: 2024.7.0
   name_add_mac_suffix: false
   platformio_options:
     board_build.flash_mode: dio
@@ -136,7 +143,7 @@ esp32_improv:
 button:
   - platform: factory_reset
     id: factory_reset_btn
-    name: Factory reset
+    internal: true
 
 binary_sensor:
   - platform: gpio
@@ -153,10 +160,8 @@ binary_sensor:
       number: GPIO0
       mode: INPUT_PULLUP
       inverted: true
-    name: Top Left Button
     id: top_left_button
-    disabled_by_default: true
-    entity_category: diagnostic
+    internal: true
     on_multi_click:
       - timing:
           - ON for at least 50ms
@@ -167,7 +172,6 @@ binary_sensor:
           - ON for at least 10s
         then:
           - button.press: factory_reset_btn
-
     
 
 output:
@@ -179,6 +183,7 @@ light:
   - platform: monochromatic
     id: led
     name: LCD Backlight
+    icon: "mdi:television"
     entity_category: config
     output: backlight_output
     restore_mode: RESTORE_DEFAULT_ON
@@ -244,6 +249,9 @@ voice_assistant:
   #   - lambda: id(voice_assistant_phase) = ${voice_assist_idle_phase_id};
   #   - script.execute: draw_display
   on_end:
+    - wait_until:
+        not:
+          voice_assistant.is_running:
     - if:
         condition:
           and:
@@ -251,10 +259,8 @@ voice_assistant:
             - lambda: return id(wake_word_engine_location).state == "On device";
             - lambda: return id(voice_assistant_phase) != ${voice_assist_timer_finished_phase_id};
         then:
-          - wait_until:
-              not:
-                voice_assistant.is_running:
           - micro_wake_word.start:
+          
   on_error:
     - if:
         condition:
@@ -270,7 +276,7 @@ voice_assistant:
                 - lambda: id(voice_assistant_phase) = ${voice_assist_idle_phase_id};
               else:
                 - lambda: id(voice_assistant_phase) = ${voice_assist_muted_phase_id};
-          - script.execute: draw_display
+          - script.execute: draw_display          
   on_client_connected:
     - wait_until:
         not: ble.enabled
@@ -498,15 +504,9 @@ script:
 
 switch:
   - platform: template
-    name: Display conversation
-    id: display_conversation
-    optimistic: true
-    restore_mode: RESTORE_DEFAULT_ON
-    entity_category: config
-
-  - platform: template
     name: Mute
     id: mute
+    icon: "mdi:microphone-off"
     optimistic: true
     restore_mode: RESTORE_DEFAULT_OFF
     entity_category: config
@@ -755,8 +755,8 @@ display:
     pages:
       - id: idle_page
         lambda: |-
-          id(led).turn_off().perform();
           it.fill(id(idle_color));
+          it.image((it.get_width() / 2), (it.get_height() / 2), id(casita_idle), ImageAlign::CENTER);
           id(draw_timer_timeline).execute();
           id(draw_active_timer_widget).execute();
       - id: listening_page
@@ -770,25 +770,22 @@ display:
           id(led).turn_on().perform();
           it.fill(id(thinking_color));
           it.image((it.get_width() / 2), (it.get_height() / 2), id(casita_thinking), ImageAlign::CENTER);
-          if (id(display_conversation).state) {
-            it.filled_rectangle(20 , 20 , 280 , 30 , Color::WHITE );
-            it.rectangle(20 , 20 , 280 , 30 , Color::BLACK );
-            it.printf(30, 25, id(font_request), Color::BLACK, "%s", id(text_request).state.c_str());
-          }
+          it.filled_rectangle(20 , 20 , 280 , 30 , Color::WHITE );
+          it.rectangle(20 , 20 , 280 , 30 , Color::BLACK );
+          it.printf(30, 25, id(font_request), Color::BLACK, "%s", id(text_request).state.c_str());
           id(draw_timer_timeline).execute();
       - id: replying_page
         lambda: |-
           id(led).turn_on().perform();
           it.fill(id(replying_color));
           it.image((it.get_width() / 2), (it.get_height() / 2), id(casita_replying), ImageAlign::CENTER);
-          if (id(display_conversation).state) {
-            it.filled_rectangle(20 , 20 , 280 , 30 , Color::WHITE );
-            it.rectangle(20 , 20 , 280 , 30 , Color::BLACK );
-            it.filled_rectangle(20 , 190 , 280 , 30 , Color::WHITE );
-            it.rectangle(20 , 190 , 280 , 30 , Color::BLACK );
-            it.printf(30, 25, id(font_request), Color::BLACK, "%s", id(text_request).state.c_str());
-            it.printf(30, 195, id(font_response), Color::BLACK, "%s", id(text_response).state.c_str());
-          }
+          it.filled_rectangle(20 , 20 , 280 , 30 , Color::WHITE );
+          it.rectangle(20 , 20 , 280 , 30 , Color::BLACK );
+          it.filled_rectangle(20 , 190 , 280 , 30 , Color::WHITE );
+          it.rectangle(20 , 190 , 280 , 30 , Color::BLACK );
+          it.printf(30, 25, id(font_request), Color::BLACK, "%s", id(text_request).state.c_str());
+          it.printf(30, 195, id(font_response), Color::BLACK, "%s", id(text_response).state.c_str());
+          id(draw_timer_timeline).execute();
           id(draw_timer_timeline).execute();
       - id: timer_finished_page
         lambda: |-
