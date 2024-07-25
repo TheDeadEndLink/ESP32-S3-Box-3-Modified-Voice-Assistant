@@ -1,0 +1,18 @@
+substitutions:
+  name: esp32-s3-box-3
+  friendly_name: ESP32 S3 Box 3
+  key: YOUR_KEY_HERE
+
+packages:
+  esphome.voice-assistant: github://TheDeadEndLink/ESP32-S3-Box-3-Modified-Voice-Assistant/esp32-s3-box-3-voice-assistant-modified.yaml@main
+
+api:
+  encryption:
+    key: ${key}
+
+voice_assistant:
+  on_tts_start:
+    - homeassistant.service:
+        service: notify.YOUR_MEDIA_PLAYER_HERE
+        data:
+          message: !lambda return x;
