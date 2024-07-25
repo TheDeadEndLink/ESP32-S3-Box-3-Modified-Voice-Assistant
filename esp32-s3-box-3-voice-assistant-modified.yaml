@@ -16,11 +16,11 @@
 substitutions:
   name: esp32-s3-box-3
   friendly_name: ESP32 S3 Box 3
-  loading_illustration_file: https://www.thedeadend.link/Content/Voice/Voice_Operator_Idle.png
-  idle_illustration_file: https://www.thedeadend.link/Content/Voice/Voice_Operator_Idle.png
-  listening_illustration_file: https://www.thedeadend.link/Content/Voice/Voice_Operator_Listening.png
-  thinking_illustration_file: https://www.thedeadend.link/Content/Voice/Voice_Operator_Responding.png
-  replying_illustration_file: https://www.thedeadend.link/Content/Voice/Voice_Operator_Responding_2.png
+  loading_illustration_file: https://github.com/TheDeadEndLink/ESP32-S3-Box-3-Modified-Voice-Assistant/raw/main/Voice_Operator_Idle.png
+  idle_illustration_file: https://github.com/TheDeadEndLink/ESP32-S3-Box-3-Modified-Voice-Assistant/raw/main/Voice_Operator_Idle.png
+  listening_illustration_file: https://github.com/TheDeadEndLink/ESP32-S3-Box-3-Modified-Voice-Assistant/raw/main/Voice_Operator_Listening.png
+  thinking_illustration_file: https://github.com/TheDeadEndLink/ESP32-S3-Box-3-Modified-Voice-Assistant/raw/main/Voice_Operator_Responding.png
+  replying_illustration_file: https://github.com/TheDeadEndLink/ESP32-S3-Box-3-Modified-Voice-Assistant/raw/main/Voice_Operator_Responding_2.png
   error_illustration_file: https://github.com/esphome/firmware/raw/main/voice-assistant/casita/error_320_240.png
   timer_finished_illustration_file: https://github.com/esphome/firmware/raw/main/voice-assistant/casita/timer_finished_320_240.png
 
