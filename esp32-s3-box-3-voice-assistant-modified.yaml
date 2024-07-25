@@ -3,15 +3,10 @@
 # Modified by TheDeadEnd
 # Modified 25.07.2024
 # Modifications:
-# 1) Speaker-Output removed:
-#    add this to your local yaml .... 
-#     voice_assistant:
-#       on_tts_start:
-#         - homeassistant.service:
-#             service: notify.alexa_media_your_device_here
-#             data:
-#               message: !lambda return x;
+# 1) Speaker-Output removed
 # 2) Display turns off in idle mode
+# --> see example for your local yaml file
+# https://github.com/TheDeadEndLink/ESP32-S3-Box-3-Modified-Voice-Assistant/raw/main/Local_ESPHome_Example.yaml
 
 substitutions:
   name: esp32-s3-box-3
