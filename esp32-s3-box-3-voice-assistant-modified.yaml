@@ -753,6 +753,7 @@ display:
     pages:
       - id: idle_page
         lambda: |-
+          id(led).turn_off().perform();
           it.fill(id(idle_color));
           it.image((it.get_width() / 2), (it.get_height() / 2), id(casita_idle), ImageAlign::CENTER);
           id(draw_timer_timeline).execute();
