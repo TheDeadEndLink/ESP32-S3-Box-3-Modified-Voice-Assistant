@@ -140,8 +140,9 @@ esp32_improv:
 
 button:
   - platform: factory_reset
+    name: Factory reset
     id: factory_reset_btn
-    internal: true
+    internal: false
 
 binary_sensor:
   - platform: gpio
